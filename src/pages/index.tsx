@@ -3,17 +3,25 @@ import { SettingsIcon } from "@/components/SettingsIcon";
 import { getLeftOverSeconds } from "@/utils/getLeftOverSeconds";
 import { useState } from "react";
 
-type buttonActive = 1 | 2 | 3;
-
+type buttons = {
+  id: number;
+  text: string;
+};
 export default function Home() {
   const color = "red";
   const [timeLeft, setTimeLeft] = useState<number>(20);
-  const [activeButton, setActiveButton] = useState<buttonActive>(2);
+  const [activeButton, setActiveButton] = useState<number>(1);
   const accentColor = "#E06469";
+
+  const buttons: buttons[] = [
+    { id: 1, text: "pomodoro" },
+    { id: 2, text: "short break" },
+    { id: 3, text: "long break" },
+  ];
 
   return (
     <div className="font-poppins font-bold h-screen bg-violet-950 flex justify-center items-center">
-      <div className="w-full lg:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
+      <div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
         {/* Heading */}
         <div className="w-full mt-10">
           <h1 className="text-2xl md:text-3xl text-center text-neutral-300">
@@ -21,40 +29,22 @@ export default function Home() {
           </h1>
         </div>
         {/* Buttons */}
-        <div className="p-1 text-sm w-3/5 h-14 rounded-full flex gap-2 bg-violet-900 text-gray-300">
-          <button
-            onClick={() => setActiveButton((prev) => 1)}
-            className={`w-1/3 h-full rounded-full ${
-              activeButton === 1 ? "bg-accent shadow-inner shadow-black" : ""
-            }  drop-shadow-lg ${
-              activeButton !== 1 &&
-              "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
-            } `}
-          >
-            pomodoro
-          </button>
-          <button
-            onClick={() => setActiveButton((prev) => 2)}
-            className={`w-1/3 h-full rounded-full ${
-              activeButton === 2 ? "bg-accent shadow-inner shadow-black" : ""
-            }  drop-shadow-lg ${
-              activeButton !== 2 &&
-              "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
-            } `}
-          >
-            short break
-          </button>
-          <button
-            onClick={() => setActiveButton((prev) => 3)}
-            className={`w-1/3 h-full rounded-full ${
-              activeButton === 3 ? "bg-accent shadow-inner shadow-black" : ""
-            }  drop-shadow-lg ${
-              activeButton !== 3 &&
-              "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
-            } `}
-          >
-            long break
-          </button>
+        <div className="p-1 sm:text-sm sm:w-1/2 text-xs w-3/4 h-14 rounded-full flex gap-2 bg-violet-900 text-gray-300">
+          {buttons.map((button) => (
+            <button
+              onClick={() => setActiveButton((prev) => button.id)}
+              className={`w-1/3 h-full rounded-full ${
+                activeButton === button.id
+                  ? "bg-accent shadow-inner shadow-black"
+                  : ""
+              }  drop-shadow-lg ${
+                activeButton !== button.id &&
+                "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
+              } `}
+            >
+              {button.text}
+            </button>
+          ))}
         </div>
         {/* Counter */}
         <div className="relative w-96 h-96 flex-col flex justify-center items-center">
