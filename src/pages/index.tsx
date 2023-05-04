@@ -1,5 +1,6 @@
 import ProgressCircle from "@/components/ProgressCircle";
 import { SettingsIcon } from "@/components/SettingsIcon";
+import { getLeftOverSeconds } from "@/utils/getLeftOverSeconds";
 import { useState } from "react";
 
 type buttonActive = 1 | 2 | 3;
@@ -9,13 +10,7 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState<number>(20);
   const [activeButton, setActiveButton] = useState<buttonActive>(2);
   const accentColor = "#E06469";
-  const accentColorTailwind = "bg-[#E06469]";
 
-  const getLeftOverSeconds = (timeInMinutes: number): string => {
-    const roundedDownMinutes = Math.floor(timeInMinutes);
-    const leftOverSeconds = (timeInMinutes - roundedDownMinutes) * 60;
-    return leftOverSeconds.toString().padStart(2, "0");
-  };
   return (
     <div className="font-poppins font-bold h-screen bg-violet-950 flex justify-center items-center">
       <div className="w-full lg:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
@@ -26,13 +21,12 @@ export default function Home() {
           </h1>
         </div>
         {/* Buttons */}
-        <div className="text-sm w-3/5 h-14 rounded-full flex gap-2 bg-violet-900 text-gray-300">
+        <div className="p-1 text-sm w-3/5 h-14 rounded-full flex gap-2 bg-violet-900 text-gray-300">
           <button
             onClick={() => setActiveButton((prev) => 1)}
             className={`w-1/3 h-full rounded-full ${
-              activeButton === 1 &&
-              `${accentColorTailwind} shadow-inner shadow-black`
-            } shadow-slate-500 drop-shadow-lg ${
+              activeButton === 1 ? "bg-accent shadow-inner shadow-black" : ""
+            }  drop-shadow-lg ${
               activeButton !== 1 &&
               "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
             } `}
@@ -42,9 +36,8 @@ export default function Home() {
           <button
             onClick={() => setActiveButton((prev) => 2)}
             className={`w-1/3 h-full rounded-full ${
-              activeButton === 2 &&
-              `${accentColorTailwind} shadow-inner shadow-black`
-            } shadow-slate-500 drop-shadow-lg ${
+              activeButton === 2 ? "bg-accent shadow-inner shadow-black" : ""
+            }  drop-shadow-lg ${
               activeButton !== 2 &&
               "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
             } `}
@@ -54,9 +47,8 @@ export default function Home() {
           <button
             onClick={() => setActiveButton((prev) => 3)}
             className={`w-1/3 h-full rounded-full ${
-              activeButton === 3 &&
-              `${accentColorTailwind} shadow-inner shadow-black`
-            } shadow-slate-500 drop-shadow-lg ${
+              activeButton === 3 ? "bg-accent shadow-inner shadow-black" : ""
+            }  drop-shadow-lg ${
               activeButton !== 3 &&
               "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
             } `}
