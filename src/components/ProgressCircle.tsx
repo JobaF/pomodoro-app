@@ -17,7 +17,11 @@ const ProgressCircle: FC<ProgressCircleProps> = ({
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="">
+    <svg
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-full rounded-full bg-violet-900"
+    >
       <circle
         fill="transparent"
         strokeWidth={stroke}

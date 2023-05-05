@@ -1,24 +1,56 @@
 import ProgressCircle from "@/components/ProgressCircle";
 import { SettingsIcon } from "@/components/SettingsIcon";
-import { getLeftOverSeconds } from "@/utils/getLeftOverSeconds";
-import { useState } from "react";
+import {
+  getLeftOverSeconds,
+  getMinutesFromSeconds,
+} from "@/utils/timeCalculations";
+import { useEffect, useRef, useState } from "react";
 
-type buttons = {
+type Buttons = {
   id: number;
   text: string;
 };
+
+type Timers = {
+  pomodoroTimerInSeconds: number;
+  shortBreakTimerInSeconds: number;
+  longBreakTimerInSeconds: number;
+};
+
 export default function Home() {
-  const color = "red";
-  const [timeLeft, setTimeLeft] = useState<number>(20);
+  const POMDORO_TIMER_IN_SECONDS = 15;
+  const SHORT_BREAK_TIMER_IN_SECONDS = 300;
+  const LONG_BREAK_TIMER_IN_SECONDS = 600;
+  const intervalRef = useRef<NodeJS.Timer>();
+
+  const [secondsLeft, setSecondsLeft] = useState<number>(
+    POMDORO_TIMER_IN_SECONDS
+  );
+  useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+  useEffect(() => {
+    setProgress(Math.floor((secondsLeft / POMDORO_TIMER_IN_SECONDS) * 100));
+  }, [secondsLeft]);
+  const [progress, setProgress] = useState<number>(100);
   const [activeButton, setActiveButton] = useState<number>(1);
   const accentColor = "#E06469";
-
-  const buttons: buttons[] = [
+  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+  const buttons: Buttons[] = [
     { id: 1, text: "pomodoro" },
     { id: 2, text: "short break" },
     { id: 3, text: "long break" },
   ];
-
+  const handleTimerStart = () => {
+    if (!isTimerRunning) {
+      intervalRef.current = setInterval(() => {
+        setSecondsLeft((prev) => prev - 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    setIsTimerRunning((prev) => !prev);
+  };
   return (
     <div className="font-poppins font-bold h-screen bg-violet-950 flex justify-center items-center">
       <div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
@@ -29,9 +61,10 @@ export default function Home() {
           </h1>
         </div>
         {/* Buttons */}
-        <div className="p-1 sm:text-sm sm:w-1/2 text-xs w-3/4 h-14 rounded-full flex gap-2 bg-violet-900 text-gray-300">
-          {buttons.map((button) => (
+        <div className="p-1 sm:w-1/2 text-sm w-3/4 h-12 rounded-full flex gap-2 bg-violet-900 text-gray-300">
+          {buttons.map((button, id) => (
             <button
+              key={id}
               onClick={() => setActiveButton((prev) => button.id)}
               className={`w-1/3 h-full rounded-full ${
                 activeButton === button.id
@@ -39,7 +72,7 @@ export default function Home() {
                   : ""
               }  drop-shadow-lg ${
                 activeButton !== button.id &&
-                "hover:shadow-inner hover:shadow-black hover:bg-gray-800"
+                "hover:shadow-inner hover:shadow-black"
               } `}
             >
               {button.text}
@@ -48,18 +81,21 @@ export default function Home() {
         </div>
         {/* Counter */}
         <div className="relative w-96 h-96 flex-col flex justify-center items-center">
-          <div className="w-full h-full rounded-full bg-violet-900">
-            <ProgressCircle
-              stroke={2}
-              progress={50}
-              strokeColor={accentColor}
-            />
-          </div>
+          <ProgressCircle
+            stroke={2}
+            progress={progress}
+            strokeColor={accentColor}
+          />
           <p className="absolute text-7xl text-neutral-300">
-            {timeLeft + ":" + getLeftOverSeconds(timeLeft)}
+            {getMinutesFromSeconds(secondsLeft) +
+              ":" +
+              getLeftOverSeconds(secondsLeft)}
           </p>
-          <button className="absolute bottom-1/4 text-xl text-neutral-300">
-            P A U S E
+          <button
+            onClick={handleTimerStart}
+            className="absolute border p-1 rounded-md hover:border-accent hover:text-accent hover:scale-105 bottom-1/4 text-xl text-neutral-300"
+          >
+            {isTimerRunning ? "P A U S E" : "S T A R T"}
           </button>
         </div>
         {/* Settings */}
