@@ -22,18 +22,6 @@ export default function Home() {
   const SHORT_BREAK_TIMER_IN_SECONDS = 300;
   const LONG_BREAK_TIMER_IN_SECONDS = 600;
   const intervalRef = useRef<NodeJS.Timer>();
-
-  const [secondsLeft, setSecondsLeft] = useState<number>(
-    POMDORO_TIMER_IN_SECONDS
-  );
-  useEffect(() => {
-    return () => clearInterval(intervalRef.current);
-  }, []);
-  useEffect(() => {
-    console.log(secondsLeft);
-    setProgress(Math.floor((secondsLeft / POMDORO_TIMER_IN_SECONDS) * 100));
-    if (secondsLeft === 0) clearInterval(intervalRef.current);
-  }, [secondsLeft]);
   const [progress, setProgress] = useState<number>(100);
   const [activeButton, setActiveButton] = useState<number>(1);
   const accentColor = "#E06469";
@@ -43,15 +31,50 @@ export default function Home() {
     { id: 2, text: "short break" },
     { id: 3, text: "long break" },
   ];
+  console.log(progress);
+  const [secondsLeft, setSecondsLeft] = useState<number>(
+    POMDORO_TIMER_IN_SECONDS
+  );
+  useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+  useEffect(() => {
+    console.log(secondsLeft);
+    const activeTimer =
+      activeButton === 1
+        ? POMDORO_TIMER_IN_SECONDS
+        : activeButton === 2
+        ? SHORT_BREAK_TIMER_IN_SECONDS
+        : LONG_BREAK_TIMER_IN_SECONDS;
+    setProgress(Math.round((secondsLeft / activeTimer) * 100 * 100) / 100);
+    if (secondsLeft === 0 && intervalRef.current) {
+      clearInterval(intervalRef.current);
+      setIsTimerRunning(false);
+    }
+  }, [secondsLeft]);
+
   const handleTimerStart = () => {
     if (isTimerRunning) {
       clearInterval(intervalRef.current);
+      setIsTimerRunning(false);
     } else {
       intervalRef.current = setInterval(() => {
         setSecondsLeft((prev) => (prev >= 1 ? prev - 1 : 0));
       }, 1000);
+      setIsTimerRunning(true);
     }
-    setIsTimerRunning((prev) => !prev);
+  };
+  const clickButton = (id: number) => {
+    setActiveButton((prev) => id);
+    setProgress(100);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      setIsTimerRunning(false);
+    }
+    if (id === 1) {
+      setSecondsLeft((prev) => POMDORO_TIMER_IN_SECONDS);
+    } else if (id === 2) setSecondsLeft((prev) => SHORT_BREAK_TIMER_IN_SECONDS);
+    else setSecondsLeft((prev) => LONG_BREAK_TIMER_IN_SECONDS);
   };
   return (
     <div className="font-poppins font-bold h-screen bg-violet-950 flex justify-center items-center">
@@ -64,10 +87,10 @@ export default function Home() {
         </div>
         {/* Buttons */}
         <div className="p-1 sm:w-1/2 text-sm w-3/4 h-12 rounded-full flex gap-2 bg-violet-900 text-gray-300">
-          {buttons.map((button, id) => (
+          {buttons.map((button, i) => (
             <button
-              key={id}
-              onClick={() => setActiveButton((prev) => button.id)}
+              key={i}
+              onClick={() => clickButton(button.id)}
               className={`w-1/3 h-full rounded-full ${
                 activeButton === button.id
                   ? "bg-accent shadow-inner shadow-black"
