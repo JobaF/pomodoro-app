@@ -1,10 +1,14 @@
-import { FC } from "react";
+import { FC, MouseEventHandler } from "react";
 
 interface SettingsIconProps {
   strokeColor: string;
+  onClick: MouseEventHandler;
 }
 
-export const SettingsIcon: FC<SettingsIconProps> = ({ strokeColor }) => {
+export const SettingsIcon: FC<SettingsIconProps> = ({
+  strokeColor,
+  onClick,
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,6 +17,7 @@ export const SettingsIcon: FC<SettingsIconProps> = ({ strokeColor }) => {
       strokeWidth="1.5"
       className="h-12 cursor-pointer"
       stroke={strokeColor}
+      onClick={onClick}
     >
       <path
         strokeLinecap="round"

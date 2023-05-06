@@ -1,3 +1,4 @@
+import { Modal } from "@/components/Modal";
 import ProgressCircle from "@/components/ProgressCircle";
 import { SettingsIcon } from "@/components/SettingsIcon";
 import {
@@ -5,6 +6,11 @@ import {
   getMinutesFromSeconds,
 } from "@/utils/timeCalculations";
 import { useEffect, useRef, useState } from "react";
+import {
+  POMDORO_TIMER_IN_SECONDS,
+  SHORT_BREAK_TIMER_IN_SECONDS,
+  LONG_BREAK_TIMER_IN_SECONDS,
+} from "@/constants/constants";
 
 type Buttons = {
   id: number;
@@ -18,14 +24,12 @@ type Timers = {
 };
 
 export default function Home() {
-  const POMDORO_TIMER_IN_SECONDS = 10;
-  const SHORT_BREAK_TIMER_IN_SECONDS = 300;
-  const LONG_BREAK_TIMER_IN_SECONDS = 600;
   const intervalRef = useRef<NodeJS.Timer>();
   const [progress, setProgress] = useState<number>(100);
   const [activeButton, setActiveButton] = useState<number>(1);
   const accentColor = "#E06469";
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const buttons: Buttons[] = [
     { id: 1, text: "pomodoro" },
     { id: 2, text: "short break" },
@@ -39,7 +43,6 @@ export default function Home() {
     return () => clearInterval(intervalRef.current);
   }, []);
   useEffect(() => {
-    console.log(secondsLeft);
     const activeTimer =
       activeButton === 1
         ? POMDORO_TIMER_IN_SECONDS
@@ -59,8 +62,8 @@ export default function Home() {
       setIsTimerRunning(false);
     } else {
       intervalRef.current = setInterval(() => {
-        setSecondsLeft((prev) => (prev >= 1 ? prev - 1 : 0));
-      }, 1000);
+        setSecondsLeft((prev) => (prev >= 0.1 ? prev - 0.1 : 0));
+      }, 100);
       setIsTimerRunning(true);
     }
   };
@@ -78,6 +81,7 @@ export default function Home() {
   };
   return (
     <div className="font-poppins font-bold h-screen bg-violet-950 flex justify-center items-center">
+      {showModal && <Modal />}
       <div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
         {/* Heading */}
         <div className="w-full mt-10">
@@ -118,14 +122,19 @@ export default function Home() {
           </p>
           <button
             onClick={handleTimerStart}
-            className="absolute border p-1 rounded-md hover:border-accent hover:text-accent hover:scale-105 bottom-1/4 text-xl text-neutral-300"
+            className={`${
+              isTimerRunning ? "bg-accent" : "border border-gray-400"
+            } absolute p-1 rounded-md drop-shadow-xl hover:shadow-inner hover:shadow-black bottom-1/4 text-xl text-neutral-300`}
           >
             {isTimerRunning ? "P A U S E" : "S T A R T"}
           </button>
         </div>
         {/* Settings */}
         <div className="w-full flex items-center justify-center h-12">
-          <SettingsIcon strokeColor={accentColor} />
+          <SettingsIcon
+            onClick={() => setShowModal((prev) => !prev)}
+            strokeColor={accentColor}
+          />
         </div>
       </div>
     </div>
