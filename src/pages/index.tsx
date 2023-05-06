@@ -18,7 +18,7 @@ type Timers = {
 };
 
 export default function Home() {
-  const POMDORO_TIMER_IN_SECONDS = 15;
+  const POMDORO_TIMER_IN_SECONDS = 10;
   const SHORT_BREAK_TIMER_IN_SECONDS = 300;
   const LONG_BREAK_TIMER_IN_SECONDS = 600;
   const intervalRef = useRef<NodeJS.Timer>();
@@ -30,7 +30,9 @@ export default function Home() {
     return () => clearInterval(intervalRef.current);
   }, []);
   useEffect(() => {
+    console.log(secondsLeft);
     setProgress(Math.floor((secondsLeft / POMDORO_TIMER_IN_SECONDS) * 100));
+    if (secondsLeft === 0) clearInterval(intervalRef.current);
   }, [secondsLeft]);
   const [progress, setProgress] = useState<number>(100);
   const [activeButton, setActiveButton] = useState<number>(1);
@@ -42,12 +44,12 @@ export default function Home() {
     { id: 3, text: "long break" },
   ];
   const handleTimerStart = () => {
-    if (!isTimerRunning) {
-      intervalRef.current = setInterval(() => {
-        setSecondsLeft((prev) => prev - 1);
-      }, 1000);
-    } else {
+    if (isTimerRunning) {
       clearInterval(intervalRef.current);
+    } else {
+      intervalRef.current = setInterval(() => {
+        setSecondsLeft((prev) => (prev >= 1 ? prev - 1 : 0));
+      }, 1000);
     }
     setIsTimerRunning((prev) => !prev);
   };

@@ -32,7 +32,7 @@ const ProgressCircle: FC<ProgressCircleProps> = ({
         strokeDasharray={circumference + " " + circumference}
         style={{
           strokeDashoffset,
-          transition: "stroke-dashoffset 1s",
+          transition: "stroke-dashoffset 0.1s ease-in",
           transform: "rotate(-90deg)",
           transformOrigin: "50% 50%",
         }}

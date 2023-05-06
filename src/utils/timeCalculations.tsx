@@ -4,6 +4,6 @@ export const getMinutesFromSeconds = (timeInSeconds: number): string => {
 };
 
 export const getLeftOverSeconds = (timeInSeconds: number): string => {
-  const leftOverSeconds = timeInSeconds % 60;
+  const leftOverSeconds = Math.floor(timeInSeconds % 60);
   return leftOverSeconds.toString().padStart(2, "0");
 };
