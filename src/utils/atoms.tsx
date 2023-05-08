@@ -18,10 +18,12 @@ const accentColorsAtom = atom<ColorsType>({
 })
 
 const isModalShowingAtom = atom<boolean>(false)
-const activeAccentColorAtom = atom<ActiveColorType>("blue")
+const activeAccentColorAtom = atom<ActiveColorType>("red")
 const getActiveAccentColorHexAtom = atom(
 	(get) => get(accentColorsAtom)[get(activeAccentColorAtom)]
 )
+
+const activeFontAtom = atom<string>("font-poppins")
 
 const progressAtom = atom((get) => {
 	const pTimeLeft = get(timeLeftAtom)
@@ -38,6 +40,7 @@ const progressAtom = atom((get) => {
 })
 
 export {
+	activeFontAtom,
 	activeButtonAtom,
 	isModalShowingAtom,
 	timerSpecsAtom,

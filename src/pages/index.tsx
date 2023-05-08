@@ -16,6 +16,7 @@ import {
 	progressAtom,
 	timeLeftAtom,
 	activeButtonAtom,
+	activeFontAtom,
 } from "@/utils/atoms"
 import { Buttons } from "@/types/types"
 
@@ -40,6 +41,7 @@ export default function Home() {
 		{ id: 2, text: "short break" },
 		{ id: 3, text: "long break" },
 	]
+	const activeFont = useAtomValue(activeFontAtom)
 	useEffect(() => {
 		return () => clearInterval(intervalRef.current)
 	}, [])
@@ -79,7 +81,9 @@ export default function Home() {
 		}
 	}
 	return (
-		<div className="font-poppins font-bold h-screen bg-violet-950 flex justify-center items-center">
+		<div
+			className={`${activeFont} font-bold h-screen bg-violet-950 flex justify-center items-center`}
+		>
 			{showModal && <Modal />}
 			<div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
 				{/* Heading */}
