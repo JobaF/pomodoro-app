@@ -82,7 +82,7 @@ export default function Home() {
 	}
 	return (
 		<div
-			className={`${activeFont} font-bold h-screen bg-violet-950 flex justify-center items-center`}
+			className={`${activeFont} font-bold h-screen bg-violet-950 flex justify-center`}
 		>
 			{showModal && <Modal />}
 			<div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center sm:gap-10 gap-4">

@@ -91,7 +91,7 @@ export const Modal: FC<ModalProps> = ({}) => {
 				onClick={() => setIsModalShowing(false)}
 				className="h-full w-full absolute z-10 bg-black opacity-50"
 			></div>
-			<div className="absolute max-h-full bg-neutral-100 z-20 md:w-2/5 min-w-[350px] md:top-36 max-w-xl opacity-100 rounded-xl flex flex-col items-center">
+			<div className="absolute max-h-full bg-neutral-100 z-20 md:w-2/5 min-w-[350px] top-10 md:top-36 max-w-xl opacity-100 rounded-xl flex flex-col items-center">
 				{/* Heading and close button */}
 				<div className="w-full flex justify-between p-5 sm:p-10">
 					<h1 className="text-3xl">Settings</h1>
