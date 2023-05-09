@@ -91,19 +91,19 @@ export const Modal: FC<ModalProps> = ({}) => {
 				onClick={() => setIsModalShowing(false)}
 				className="h-full w-full absolute z-10 bg-black opacity-50"
 			></div>
-			<div className="absolute max-h-full bg-neutral-100 z-20 w-4/5 md:w-2/5 min-w-[350px] md:top-36 max-w-xl opacity-100 rounded-xl flex flex-col items-center">
+			<div className="absolute max-h-full bg-neutral-100 z-20 md:w-2/5 min-w-[350px] md:top-36 max-w-xl opacity-100 rounded-xl flex flex-col items-center">
 				{/* Heading and close button */}
-				<div className="w-full flex justify-between items-center p-3 sm:p-10">
+				<div className="w-full flex justify-between p-5 sm:p-10">
 					<h1 className="text-3xl">Settings</h1>
 					<CloseIcon onClickHandler={() => setIsModalShowing(false)} />
 				</div>
 				<hr className="bg-gray-300 opacity-50 dark:opacity-50 w-full h-0.5" />
 
 				{/* Three time inputs */}
-				<div className="w-full h-12 pt-5 tracking-widest text-center md:pl-10 md:text-left">
+				<div className="w-full h-12 pt-2 tracking-widest text-center md:pl-10 md:text-left">
 					{"TIME (MINUTES)"}
 				</div>
-				<div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 px-10">
+				<div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4 px-10">
 					<div className="grid grid-cols-2 sm:grid-rows-2 sm:grid-cols-1 items-center">
 						<label className="text-xs text-gray-400" htmlFor="pomodoroTimer">
 							pomodoro
@@ -112,11 +112,11 @@ export const Modal: FC<ModalProps> = ({}) => {
 							onChange={handleChange}
 							name="pomodoroTimer"
 							type="number"
-							className="pl-10 rounded-lg drop-shadow-md text-sm sm:w-20 lg:w-24 w-full h-9 bg-gray-300 "
+							className="rounded-lg drop-shadow-md text-sm lg:w-24 w-20 text-center h-9 bg-gray-300"
 							value={pomodoroSpecs.pomodoroTimerLength}
 						/>
 					</div>
-					<div className="grid grid-cols-2 sm:grid-rows-2 sm:grid-cols-1 items-center">
+					<div className="grid grid-cols-2 sm:grid-rows-2 sm:grid-cols-1 items-center justify-items-stretch">
 						<label className="text-xs text-gray-400 " htmlFor="shortBreakTimer">
 							short break
 						</label>
@@ -124,7 +124,7 @@ export const Modal: FC<ModalProps> = ({}) => {
 							onChange={handleChange}
 							name="shortBreakTimer"
 							type="number"
-							className="pl-10 rounded-lg drop-shadow-md text-sm sm:w-20 lg:w-24 w-full h-9 bg-gray-300"
+							className="rounded-lg drop-shadow-md text-sm lg:w-24 w-20 h-9 bg-gray-300 text-center"
 							value={pomodoroSpecs.shortBreakLength}
 						/>
 					</div>
@@ -136,16 +136,16 @@ export const Modal: FC<ModalProps> = ({}) => {
 							onChange={handleChange}
 							name="longBreakTimer"
 							type="number"
-							className="pl-10 rounded-lg drop-shadow-md text-sm sm:w-20 lg:w-24 w-full h-9 bg-gray-300"
+							className="rounded-lg drop-shadow-md text-sm lg:w-24 w-20 h-9 bg-gray-300 text-center"
 							value={pomodoroSpecs.longBreakLength}
 						/>{" "}
 					</div>
 				</div>
 				<hr className="mt-7 ml-10 mr-10 bg-gray-300 opacity-50 dark:opacity-50 w-5/6 h-0.5" />
 				{/* Font selection */}
-				<div className="w-full p-5 sm:p-10 flex justify-between items-center">
+				<div className="w-full p-2 sm:p-10 sm:flex text-center justify-between items-center">
 					<p className="tracking-widest">FONT</p>
-					<div className="flex gap-5">
+					<div className="flex gap-5 justify-center mt-2">
 						<button
 							onClick={() => setActiveFont("font-poppins")}
 							className={` ${
@@ -181,9 +181,9 @@ export const Modal: FC<ModalProps> = ({}) => {
 				<hr className="ml-10 mr-10 bg-gray-300 opacity-50 dark:opacity-50 w-5/6 h-0.5" />
 
 				{/* Color selection */}
-				<div className="w-full p-5 sm:p-10 flex justify-between items-center mb-10">
+				<div className="w-full p-2 sm:p-10 sm:flex text-center justify-between items-center mb-10">
 					<p className="tracking-widest">COLOR</p>
-					<div className="flex gap-5">
+					<div className="flex gap-5 justify-center">
 						<button
 							className="h-10 w-10 bg-pomodoroRed rounded-full flex justify-center items-center"
 							onClick={() => setActiveColor("red")}
