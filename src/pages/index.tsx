@@ -85,7 +85,7 @@ export default function Home() {
 			className={`${activeFont} font-bold h-screen bg-violet-950 flex justify-center items-center`}
 		>
 			{showModal && <Modal />}
-			<div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center gap-10">
+			<div className="w-full xl:w-1/2 max-w-[700px] h-full flex flex-col items-center sm:gap-10 gap-4">
 				{/* Heading */}
 				<div className="w-full mt-10">
 					<h1 className="text-2xl md:text-3xl text-center text-neutral-300">
