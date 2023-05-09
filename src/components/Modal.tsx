@@ -19,7 +19,7 @@ export const Modal: FC<ModalProps> = ({}) => {
 	const [activeFont, setActiveFont] = useAtom(activeFontAtom)
 	const [, setIsModalShowing] = useAtom(isModalShowingAtom)
 	const activeButton = useAtomValue(activeButtonAtom)
-	const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom)
+	const [, setTimeLeft] = useAtom(timeLeftAtom)
 
 	const [pomodoroSpecs, setPomodoroSpecs] = useState({
 		pomodoroTimerLength: (timerSpecs.pomodoroTimerLength / 60).toString(),
