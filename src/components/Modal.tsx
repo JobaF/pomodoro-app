@@ -1,15 +1,15 @@
-import { FC } from "react"
+import { ChangeEvent, FC, useState } from "react"
 import { CloseIcon } from "./CloseIcon"
-import { POMDORO_TIMER_IN_SECONDS } from "@/constants/constants"
 import {
 	activeAccentColorAtom,
 	timerSpecsAtom,
 	activeFontAtom,
 	isModalShowingAtom,
+	activeButtonAtom,
+	timeLeftAtom,
 } from "@/utils/atoms"
 import { useAtom, useAtomValue } from "jotai"
 import { CheckIcon } from "./CheckIcon"
-import { ActiveColorType } from "@/types/types"
 
 interface ModalProps {}
 
@@ -17,18 +17,85 @@ export const Modal: FC<ModalProps> = ({}) => {
 	const [timerSpecs, setTimerSpecs] = useAtom(timerSpecsAtom)
 	const [activeColor, setActiveColor] = useAtom(activeAccentColorAtom)
 	const [activeFont, setActiveFont] = useAtom(activeFontAtom)
-	const [, setIsModalShowingAtom] = useAtom(isModalShowingAtom)
+	const [, setIsModalShowing] = useAtom(isModalShowingAtom)
+	const activeButton = useAtomValue(activeButtonAtom)
+	const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom)
+
+	const [pomodoroSpecs, setPomodoroSpecs] = useState({
+		pomodoroTimerLength: (timerSpecs.pomodoroTimerLength / 60).toString(),
+		shortBreakLength: (timerSpecs.shortBreakLength / 60).toString(),
+		longBreakLength: (timerSpecs.longBreakLength / 60).toString(),
+	})
+	const tailwindAccentColor =
+		activeColor === "red"
+			? "bg-pomodoroRed"
+			: activeColor === "blue"
+			? "bg-pomodoroBlue"
+			: "bg-pomodoroPink"
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const inputValue = event.currentTarget.value
+			? event.currentTarget.value.toString()
+			: ""
+		console.log(inputValue)
+		const inputName = event.target.name
+
+		if (inputName === "pomodoroTimer") {
+			setPomodoroSpecs((prev) => ({
+				...prev,
+				pomodoroTimerLength: inputValue,
+			}))
+		} else if (inputName === "shortBreakTimer") {
+			setPomodoroSpecs((prev) => ({
+				...prev,
+				shortBreakLength: inputValue,
+			}))
+		} else {
+			setPomodoroSpecs((prev) => ({
+				...prev,
+				longBreakLength: inputValue,
+			}))
+		}
+	}
+
+	const applyTimes = () => {
+		if (
+			!isNaN(parseInt(pomodoroSpecs.pomodoroTimerLength)) &&
+			!isNaN(parseInt(pomodoroSpecs.shortBreakLength)) &&
+			!isNaN(parseInt(pomodoroSpecs.longBreakLength)) &&
+			parseInt(pomodoroSpecs.pomodoroTimerLength) > 0 &&
+			parseInt(pomodoroSpecs.pomodoroTimerLength) < 100 &&
+			parseInt(pomodoroSpecs.shortBreakLength) > 0 &&
+			parseInt(pomodoroSpecs.shortBreakLength) < 100 &&
+			parseInt(pomodoroSpecs.longBreakLength) > 0 &&
+			parseInt(pomodoroSpecs.longBreakLength) < 100
+		) {
+			setTimerSpecs({
+				pomodoroTimerLength: parseInt(pomodoroSpecs.pomodoroTimerLength) * 60,
+				shortBreakLength: parseInt(pomodoroSpecs.shortBreakLength) * 60,
+				longBreakLength: parseInt(pomodoroSpecs.longBreakLength) * 60,
+			})
+
+			if (activeButton === 1) {
+				setTimeLeft(parseInt(pomodoroSpecs.pomodoroTimerLength) * 60)
+			} else if (activeButton === 2) {
+				setTimeLeft(parseInt(pomodoroSpecs.shortBreakLength) * 60)
+			} else {
+				setTimeLeft(parseInt(pomodoroSpecs.longBreakLength) * 60)
+			}
+		}
+		setIsModalShowing(false)
+	}
 	return (
 		<>
 			<div
-				onClick={() => setIsModalShowingAtom(false)}
+				onClick={() => setIsModalShowing(false)}
 				className="h-full w-full absolute z-10 bg-black opacity-70"
 			></div>
-			<div className="absolute bg-neutral-100 z-20 w-2/5 opacity-100 rounded-xl flex flex-col overflow-hidden items-center">
+			<div className="absolute bg-neutral-100 z-20 w-2/5 opacity-100 rounded-xl flex flex-col items-center">
 				{/* Heading and close button */}
 				<div className="w-full flex justify-between items-center p-10">
 					<h1 className="text-3xl">Settings</h1>
-					<CloseIcon onClickHandler={() => setIsModalShowingAtom(false)} />
+					<CloseIcon onClickHandler={() => setIsModalShowing(false)} />
 				</div>
 				<hr className="bg-gray-300 opacity-50 dark:opacity-50 w-full h-0.5" />
 
@@ -42,10 +109,11 @@ export const Modal: FC<ModalProps> = ({}) => {
 							pomodoro
 						</label>
 						<input
+							onChange={handleChange}
 							name="pomodoroTimer"
 							type="number"
 							className="pl-10 rounded-lg drop-shadow-md text-sm w-full h-9 bg-gray-300"
-							value={timerSpecs.pomodoroTimerLength / 60}
+							value={pomodoroSpecs.pomodoroTimerLength}
 						/>
 					</div>
 					<div className="flex w-1/3 flex-col justify-center items-start gap-3">
@@ -53,10 +121,11 @@ export const Modal: FC<ModalProps> = ({}) => {
 							short break
 						</label>
 						<input
+							onChange={handleChange}
 							name="shortBreakTimer"
 							type="number"
 							className="pl-10 rounded-lg drop-shadow-md text-sm w-full h-9 bg-gray-300"
-							value={timerSpecs.shortBreakLength / 60}
+							value={pomodoroSpecs.shortBreakLength}
 						/>
 					</div>
 					<div className="flex w-1/3 flex-col justify-center items-start gap-3">
@@ -64,10 +133,11 @@ export const Modal: FC<ModalProps> = ({}) => {
 							long break
 						</label>
 						<input
+							onChange={handleChange}
 							name="longBreakTimer"
 							type="number"
 							className="pl-10 rounded-lg drop-shadow-md text-sm w-full h-9 bg-gray-300"
-							value={timerSpecs.longBreakLength / 60}
+							value={pomodoroSpecs.longBreakLength}
 						/>{" "}
 					</div>
 				</div>
@@ -111,7 +181,7 @@ export const Modal: FC<ModalProps> = ({}) => {
 				<hr className="ml-10 mr-10 bg-gray-300 opacity-50 dark:opacity-50 w-5/6 h-0.5" />
 
 				{/* Color selection */}
-				<div className="w-full p-10 flex justify-between items-center">
+				<div className="w-full p-10 flex justify-between items-center mb-10">
 					<p className="tracking-widest">COLOR</p>
 					<div className="flex gap-5">
 						<button
@@ -134,6 +204,12 @@ export const Modal: FC<ModalProps> = ({}) => {
 						</button>
 					</div>
 				</div>
+				<button
+					onClick={applyTimes}
+					className={`${tailwindAccentColor} h-12 absolute -bottom-5 z-50 sm:w-24 text-white w-1/3 rounded-xl`}
+				>
+					Apply
+				</button>
 			</div>
 		</>
 	)

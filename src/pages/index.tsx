@@ -137,7 +137,13 @@ export default function Home() {
 				{/* Settings */}
 				<div className="w-full flex items-center justify-center h-12">
 					<SettingsIcon
-						onClick={() => setShowModal(true)}
+						onClick={() => {
+							if (intervalRef.current) {
+								clearInterval(intervalRef.current)
+								setIsTimerRunning(false)
+							}
+							setShowModal(true)
+						}}
 						strokeColor={hexAccentColor}
 					/>
 				</div>
