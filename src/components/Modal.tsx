@@ -89,9 +89,9 @@ export const Modal: FC<ModalProps> = ({}) => {
 		<>
 			<div
 				onClick={() => setIsModalShowing(false)}
-				className="h-full w-full absolute z-10 bg-black opacity-70"
+				className="h-full w-full absolute z-10 bg-black opacity-50"
 			></div>
-			<div className="absolute bg-neutral-100 z-20 w-2/5 opacity-100 rounded-xl flex flex-col items-center">
+			<div className="absolute bg-neutral-100 z-20 w-4/5 md:w-2/5 min-w-[400px] max-w-xl opacity-100 rounded-xl top-36 flex flex-col items-center">
 				{/* Heading and close button */}
 				<div className="w-full flex justify-between items-center p-10">
 					<h1 className="text-3xl">Settings</h1>
@@ -100,11 +100,11 @@ export const Modal: FC<ModalProps> = ({}) => {
 				<hr className="bg-gray-300 opacity-50 dark:opacity-50 w-full h-0.5" />
 
 				{/* Three time inputs */}
-				<div className="w-full h-12 pl-10 pt-5 tracking-widest">
+				<div className="w-full h-12 pt-5 tracking-widest text-center md:pl-10 md:text-left">
 					{"TIME (MINUTES)"}
 				</div>
-				<div className="w-full flex justify-center gap-10 mt-4 px-10 md:flex-row ">
-					<div className="flex w-1/3 flex-col justify-center items-start gap-3 ">
+				<div className="w-full grid grid-cols-1 sm:grid-cols-3  gap-10 mt-4 px-10">
+					<div className="grid grid-cols-2 sm:grid-rows-2 sm:grid-cols-1 items-center sm:flex-col gap-3">
 						<label className="text-xs text-gray-400" htmlFor="pomodoroTimer">
 							pomodoro
 						</label>
@@ -112,23 +112,23 @@ export const Modal: FC<ModalProps> = ({}) => {
 							onChange={handleChange}
 							name="pomodoroTimer"
 							type="number"
-							className="pl-10 rounded-lg drop-shadow-md text-sm w-full h-9 bg-gray-300"
+							className="pl-10 rounded-lg drop-shadow-md text-sm sm:w-20 lg:w-24 w-ful h-9 bg-gray-300 "
 							value={pomodoroSpecs.pomodoroTimerLength}
 						/>
 					</div>
-					<div className="flex w-1/3 flex-col justify-center items-start gap-3">
-						<label className="text-xs text-gray-400" htmlFor="shortBreakTimer">
+					<div className="grid grid-cols-2 sm:grid-rows-2 sm:grid-cols-1 items-center gap-3">
+						<label className="text-xs text-gray-400 " htmlFor="shortBreakTimer">
 							short break
 						</label>
 						<input
 							onChange={handleChange}
 							name="shortBreakTimer"
 							type="number"
-							className="pl-10 rounded-lg drop-shadow-md text-sm w-full h-9 bg-gray-300"
+							className="pl-10 rounded-lg drop-shadow-md text-sm sm:w-20 lg:w-24 w-full h-9 bg-gray-300"
 							value={pomodoroSpecs.shortBreakLength}
 						/>
 					</div>
-					<div className="flex w-1/3 flex-col justify-center items-start gap-3">
+					<div className="grid grid-cols-2 sm:grid-rows-2 sm:grid-cols-1 items-center gap-3">
 						<label className="text-xs text-gray-400" htmlFor="longBreakTimer">
 							long break
 						</label>
@@ -136,7 +136,7 @@ export const Modal: FC<ModalProps> = ({}) => {
 							onChange={handleChange}
 							name="longBreakTimer"
 							type="number"
-							className="pl-10 rounded-lg drop-shadow-md text-sm w-full h-9 bg-gray-300"
+							className="pl-10 rounded-lg drop-shadow-md text-sm sm:w-20 lg:w-24 w-ful h-9 bg-gray-300"
 							value={pomodoroSpecs.longBreakLength}
 						/>{" "}
 					</div>
