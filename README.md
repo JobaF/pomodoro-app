@@ -15,5 +15,8 @@
 <br>
 <div align='center'>
 <img src="https://github.com/JobaF/pomodoro-app/assets/57532845/c076f6b5-beef-440a-9967-0f904e59fc1d" />
+<img src="https://github.com/JobaF/pomodoro-app/assets/57532845/eb637798-afc7-416e-82b3-9bdedba34e6b" />
+
 </div>
+
 
